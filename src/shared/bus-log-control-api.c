@@ -107,7 +107,7 @@ static const sd_bus_vtable log_control_vtable[] = {
         SD_BUS_VTABLE_END,
 };
 
-const BusObjectImplementation log_control_object = {
+const BusObjectImplementation* const log_control_object = &(BusObjectImplementation){
         "/org/freedesktop/LogControl1",
         "org.freedesktop.LogControl1",
         .vtables = BUS_VTABLES(log_control_vtable),

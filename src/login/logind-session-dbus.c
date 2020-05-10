@@ -965,7 +965,7 @@ static const sd_bus_vtable session_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation session_object = {
+const BusObjectImplementation* const session_object = &(BusObjectImplementation){
         "/org/freedesktop/login1/session",
         "org.freedesktop.login1.Session",
         .fallback_vtables = BUS_FALLBACK_VTABLES({session_vtable, session_object_find}),

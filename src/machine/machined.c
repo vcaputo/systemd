@@ -190,7 +190,7 @@ static int manager_connect_bus(Manager *m) {
         if (r < 0)
                 return log_error_errno(r, "Failed to connect to system bus: %m");
 
-        r = bus_add_implementation(m->bus, &manager_object, m);
+        r = bus_add_implementation(m->bus, manager_object, m);
         if (r < 0)
                 return r;
 
@@ -316,8 +316,8 @@ static int run(int argc, char *argv[]) {
 
         r = service_parse_argv("systemd-machined.service",
                                "Manage registrations of local VMs and containers.",
-                               BUS_IMPLEMENTATIONS(&manager_object,
-                                                   &log_control_object),
+                               BUS_IMPLEMENTATIONS(manager_object,
+                                                   log_control_object),
                                argc, argv);
         if (r <= 0)
                 return r;

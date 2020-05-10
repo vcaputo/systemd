@@ -1203,7 +1203,7 @@ static const sd_bus_vtable transfer_vtable[] = {
         SD_BUS_VTABLE_END,
 };
 
-static const BusObjectImplementation transfer_object = {
+static const BusObjectImplementation* const transfer_object = &(BusObjectImplementation){
         "/org/freedesktop/import1/transfer",
         "org.freedesktop.import1.Transfer",
         .fallback_vtables = BUS_FALLBACK_VTABLES({transfer_vtable, transfer_object_find}),
@@ -1316,11 +1316,11 @@ static const sd_bus_vtable manager_vtable[] = {
         SD_BUS_VTABLE_END,
 };
 
-static const BusObjectImplementation manager_object = {
+static const BusObjectImplementation* const manager_object = &(BusObjectImplementation){
         "/org/freedesktop/import1",
         "org.freedesktop.import1.Manager",
         .vtables = BUS_VTABLES(manager_vtable),
-        .children = BUS_IMPLEMENTATIONS(&transfer_object),
+        .children = BUS_IMPLEMENTATIONS(transfer_object),
 };
 
 static int manager_add_bus_objects(Manager *m) {
@@ -1328,7 +1328,7 @@ static int manager_add_bus_objects(Manager *m) {
 
         assert(m);
 
-        r = bus_add_implementation(m->bus, &manager_object, m);
+        r = bus_add_implementation(m->bus, manager_object, m);
         if (r < 0)
                 return r;
 
@@ -1373,8 +1373,8 @@ static int run(int argc, char *argv[]) {
 
         r = service_parse_argv("systemd-importd.service",
                                "VM and container image import and export service.",
-                               BUS_IMPLEMENTATIONS(&manager_object,
-                                                   &log_control_object),
+                               BUS_IMPLEMENTATIONS(manager_object,
+                                                   log_control_object),
                                argc, argv);
         if (r <= 0)
                 return r;

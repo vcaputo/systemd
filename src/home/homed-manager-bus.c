@@ -811,11 +811,11 @@ static const sd_bus_vtable manager_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation manager_object = {
+const BusObjectImplementation* const manager_object = &(BusObjectImplementation){
         "/org/freedesktop/home1",
         "org.freedesktop.home1.Manager",
         .vtables = BUS_VTABLES(manager_vtable),
-        .children = BUS_IMPLEMENTATIONS(&home_object),
+        .children = BUS_IMPLEMENTATIONS(home_object),
 };
 
 static int on_deferred_auto_login(sd_event_source *s, void *userdata) {

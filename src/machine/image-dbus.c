@@ -498,7 +498,7 @@ const sd_bus_vtable image_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation image_object = {
+const BusObjectImplementation* const image_object = &(BusObjectImplementation){
         "/org/freedesktop/machine1/image",
         "org.freedesktop.machine1.Image",
         .fallback_vtables = BUS_FALLBACK_VTABLES({image_vtable, image_object_find}),

@@ -870,7 +870,7 @@ const sd_bus_vtable home_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation home_object = {
+const BusObjectImplementation* const home_object = &(BusObjectImplementation){
         "/org/freedesktop/home1/home",
         "org.freedesktop.home1.Home",
         .fallback_vtables = BUS_FALLBACK_VTABLES({home_vtable, bus_home_object_find}),

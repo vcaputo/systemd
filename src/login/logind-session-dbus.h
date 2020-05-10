@@ -5,7 +5,7 @@
 
 #include "logind-session.h"
 
-extern const BusObjectImplementation session_object;
+extern const BusObjectImplementation* const session_object;
 
 char *session_bus_path(Session *s);
 

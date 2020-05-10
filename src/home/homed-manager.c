@@ -890,7 +890,7 @@ static int manager_connect_bus(Manager *m) {
         if (r < 0)
                 return log_error_errno(r, "Failed to connect to system bus: %m");
 
-        r = bus_add_implementation(m->bus, &manager_object, m);
+        r = bus_add_implementation(m->bus, manager_object, m);
         if (r < 0)
                 return r;
 

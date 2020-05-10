@@ -6,7 +6,7 @@
 #include "bus-util.h"
 #include "machine.h"
 
-extern const BusObjectImplementation machine_object;
+extern const BusObjectImplementation* const machine_object;
 
 char *machine_bus_path(Machine *s);
 

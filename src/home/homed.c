@@ -21,8 +21,8 @@ static int run(int argc, char *argv[]) {
 
         r = service_parse_argv("systemd-homed.service",
                                "A service to create, remove, change or inspect home areas.",
-                               BUS_IMPLEMENTATIONS(&manager_object,
-                                                   &log_control_object),
+                               BUS_IMPLEMENTATIONS(manager_object,
+                                                   log_control_object),
                                argc, argv);
         if (r <= 0)
                 return r;

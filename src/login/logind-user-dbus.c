@@ -391,7 +391,7 @@ static const sd_bus_vtable user_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation user_object = {
+const BusObjectImplementation* const user_object = &(BusObjectImplementation){
         "/org/freedesktop/login1/user",
         "org.freedesktop.login1.User",
         .fallback_vtables = BUS_FALLBACK_VTABLES({user_vtable, user_object_find}),

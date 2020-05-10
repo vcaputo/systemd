@@ -185,7 +185,7 @@ static int bus_job_enumerate(sd_bus *bus, const char *path, void *userdata, char
         return k;
 }
 
-const BusObjectImplementation job_object = {
+const BusObjectImplementation* const job_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/job",
         "org.freedesktop.systemd1.Job",
         .fallback_vtables = BUS_FALLBACK_VTABLES({bus_job_vtable, bus_job_find}),

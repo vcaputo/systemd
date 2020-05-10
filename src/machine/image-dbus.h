@@ -4,7 +4,7 @@
 #include "bus-util.h"
 #include "machined.h"
 
-extern const BusObjectImplementation image_object;
+extern const BusObjectImplementation* const image_object;
 
 char *image_bus_path(const char *name);
 

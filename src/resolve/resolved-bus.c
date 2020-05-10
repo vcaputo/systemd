@@ -1970,12 +1970,12 @@ static const sd_bus_vtable resolve_vtable[] = {
         SD_BUS_VTABLE_END,
 };
 
-const BusObjectImplementation manager_object = {
+const BusObjectImplementation* const manager_object = {
         "/org/freedesktop/resolve1",
         "org.freedesktop.resolve1.Manager",
         .vtables = BUS_VTABLES(resolve_vtable),
-        .children = BUS_IMPLEMENTATIONS(&link_object,
-                                        &dnssd_object),
+        .children = BUS_IMPLEMENTATIONS(link_object,
+                                        dnssd_object),
 };
 
 static int match_prepare_for_sleep(sd_bus_message *message, void *userdata, sd_bus_error *ret_error) {
@@ -2012,7 +2012,7 @@ int manager_connect_bus(Manager *m) {
         if (r < 0)
                 return log_error_errno(r, "Failed to connect to system bus: %m");
 
-        r = bus_add_implementation(m->bus, &manager_object, m);
+        r = bus_add_implementation(m->bus, manager_object, m);
         if (r < 0)
                 return r;
 

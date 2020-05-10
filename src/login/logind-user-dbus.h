@@ -5,7 +5,7 @@
 
 #include "logind-user.h"
 
-extern const BusObjectImplementation user_object;
+extern const BusObjectImplementation* const user_object;
 
 char *user_bus_path(User *s);
 

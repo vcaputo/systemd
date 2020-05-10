@@ -3,4 +3,4 @@
 
 #include "bus-util.h"
 
-extern const BusObjectImplementation manager_object;
+extern const BusObjectImplementation* const manager_object;

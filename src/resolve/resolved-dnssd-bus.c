@@ -129,7 +129,7 @@ static const sd_bus_vtable dnssd_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation dnssd_object = {
+const BusObjectImplementation* const dnssd_object = &(BusObjectImplementation){
         "/org/freedesktop/resolve1/dnssd",
         "org.freedesktop.resolve1.DnssdService",
         .fallback_vtables = BUS_FALLBACK_VTABLES({dnssd_vtable, dnssd_object_find}),

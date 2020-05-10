@@ -821,7 +821,7 @@ static const sd_bus_vtable link_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation link_object = {
+const BusObjectImplementation* const link_object = &(BusObjectImplementation){
         "/org/freedesktop/resolve1/link",
         "org.freedesktop.resolve1.Link",
         .fallback_vtables = BUS_FALLBACK_VTABLES({link_vtable, link_object_find}),

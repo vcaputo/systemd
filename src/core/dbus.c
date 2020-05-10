@@ -477,7 +477,7 @@ static int bus_unit_enumerate(sd_bus *bus, const char *path, void *userdata, cha
         return k;
 }
 
-static const BusObjectImplementation unit_object = {
+static const BusObjectImplementation* const unit_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Unit",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -485,21 +485,21 @@ static const BusObjectImplementation unit_object = {
         .node_enumerator = bus_unit_enumerate,
 };
 
-static const BusObjectImplementation bus_automount_object = {
+static const BusObjectImplementation* const bus_automount_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Automount",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
                 { bus_automount_vtable,   bus_unit_interface_find }),
 };
 
-static const BusObjectImplementation bus_device_object = {
+static const BusObjectImplementation* const bus_device_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Device",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
                 { bus_device_vtable,      bus_unit_interface_find }),
 };
 
-static const BusObjectImplementation bus_mount_object = {
+static const BusObjectImplementation* const bus_mount_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Mount",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -510,14 +510,14 @@ static const BusObjectImplementation bus_mount_object = {
                 { bus_kill_vtable,        bus_kill_context_find }),
 };
 
-static const BusObjectImplementation bus_path_object = {
+static const BusObjectImplementation* const bus_path_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Path",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
                 { bus_path_vtable,        bus_unit_interface_find }),
 };
 
-static const BusObjectImplementation bus_scope_object = {
+static const BusObjectImplementation* const bus_scope_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Scope",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -527,7 +527,7 @@ static const BusObjectImplementation bus_scope_object = {
                 { bus_kill_vtable,        bus_kill_context_find }),
 };
 
-static const BusObjectImplementation bus_service_object = {
+static const BusObjectImplementation* const bus_service_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Service",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -538,7 +538,7 @@ static const BusObjectImplementation bus_service_object = {
                 { bus_kill_vtable,        bus_kill_context_find }),
 };
 
-static const BusObjectImplementation bus_slice_object = {
+static const BusObjectImplementation* const bus_slice_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Slice",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -547,7 +547,7 @@ static const BusObjectImplementation bus_slice_object = {
                 { bus_cgroup_vtable,      bus_cgroup_context_find }),
 };
 
-static const BusObjectImplementation bus_socket_object = {
+static const BusObjectImplementation* const bus_socket_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Socket",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -558,7 +558,7 @@ static const BusObjectImplementation bus_socket_object = {
                 { bus_kill_vtable,        bus_kill_context_find }),
 };
 
-static const BusObjectImplementation bus_swap_object = {
+static const BusObjectImplementation* const bus_swap_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Swap",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
@@ -569,41 +569,41 @@ static const BusObjectImplementation bus_swap_object = {
                 { bus_kill_vtable,        bus_kill_context_find }),
 };
 
-static const BusObjectImplementation bus_target_object = {
+static const BusObjectImplementation* const bus_target_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Target",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
                 { bus_target_vtable,      bus_unit_interface_find }),
 };
 
-static const BusObjectImplementation bus_timer_object = {
+static const BusObjectImplementation* const bus_timer_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1/unit",
         "org.freedesktop.systemd1.Timer",
         .fallback_vtables = BUS_FALLBACK_VTABLES(
                 { bus_timer_vtable,       bus_unit_interface_find }),
 };
 
-static const BusObjectImplementation bus_manager_object = {
+static const BusObjectImplementation* const bus_manager_object = &(BusObjectImplementation){
         "/org/freedesktop/systemd1",
         "org.freedesktop.systemd1.Manager",
         .vtables = BUS_VTABLES(bus_manager_vtable),
         .children = BUS_IMPLEMENTATIONS(
-                        &job_object,
-                        &unit_object,
-                        &bus_automount_object,
-                        &bus_device_object,
-                        &bus_mount_object,
-                        &bus_path_object,
-                        &bus_scope_object,
-                        &bus_service_object,
-                        &bus_slice_object,
-                        &bus_socket_object,
-                        &bus_swap_object,
-                        &bus_target_object,
-                        &bus_timer_object),
+                        job_object,
+                        unit_object,
+                        bus_automount_object,
+                        bus_device_object,
+                        bus_mount_object,
+                        bus_path_object,
+                        bus_scope_object,
+                        bus_service_object,
+                        bus_slice_object,
+                        bus_socket_object,
+                        bus_swap_object,
+                        bus_target_object,
+                        bus_timer_object),
 };
 
-static const BusObjectImplementation manager_log_control_object = {
+static const BusObjectImplementation* const manager_log_control_object = &(BusObjectImplementation){
         "/org/freedesktop/LogControl1",
         "org.freedesktop.LogControl1",
         .vtables = BUS_VTABLES(bus_manager_log_control_vtable),
@@ -613,8 +613,8 @@ int bus_manager_introspect_implementations(FILE *out, const char *pattern) {
         return bus_introspect_implementations(
                         out,
                         pattern,
-                        BUS_IMPLEMENTATIONS(&bus_manager_object,
-                                            &manager_log_control_object));
+                        BUS_IMPLEMENTATIONS(bus_manager_object,
+                                            manager_log_control_object));
 }
 
 static int bus_setup_api_vtables(Manager *m, sd_bus *bus) {
@@ -629,11 +629,11 @@ static int bus_setup_api_vtables(Manager *m, sd_bus *bus) {
                 return log_error_errno(r, "Failed to add SELinux access filter: %m");
 #endif
 
-        r = bus_add_implementation(bus, &bus_manager_object, m);
+        r = bus_add_implementation(bus, bus_manager_object, m);
         if (r < 0)
                 return r;
 
-        return bus_add_implementation(bus, &manager_log_control_object, m);
+        return bus_add_implementation(bus, manager_log_control_object, m);
 }
 
 static int bus_setup_disconnected_match(Manager *m, sd_bus *bus) {

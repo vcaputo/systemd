@@ -6,7 +6,7 @@
 #include "bus-util.h"
 #include "resolved-link.h"
 
-extern const BusObjectImplementation link_object;
+extern const BusObjectImplementation* const link_object;
 
 char *link_bus_path(const Link *link);
 

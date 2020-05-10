@@ -6,7 +6,7 @@
 #include "logind-seat.h"
 #include "bus-util.h"
 
-extern const BusObjectImplementation seat_object;
+extern const BusObjectImplementation* const seat_object;
 
 char *seat_bus_path(Seat *s);
 

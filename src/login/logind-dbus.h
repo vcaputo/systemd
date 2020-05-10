@@ -31,4 +31,4 @@ int manager_kill_unit(Manager *manager, const char *unit, KillWho who, int signo
 int manager_unit_is_active(Manager *manager, const char *unit, sd_bus_error *error);
 int manager_job_is_active(Manager *manager, const char *path, sd_bus_error *error);
 
-extern const BusObjectImplementation manager_object;
+extern const BusObjectImplementation* const manager_object;

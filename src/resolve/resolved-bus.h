@@ -4,7 +4,7 @@
 #include "bus-util.h"
 #include "resolved-manager.h"
 
-extern const BusObjectImplementation manager_object;
+extern const BusObjectImplementation* const manager_object;
 
 int manager_connect_bus(Manager *m);
 int _manager_send_changed(Manager *manager, const char *property, ...) _sentinel_;

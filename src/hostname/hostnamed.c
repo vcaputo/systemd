@@ -740,7 +740,7 @@ static const sd_bus_vtable hostname_vtable[] = {
         SD_BUS_VTABLE_END,
 };
 
-static const BusObjectImplementation manager_object = {
+static const BusObjectImplementation* const manager_object = &(BusObjectImplementation){
         "/org/freedesktop/hostname1",
         "org.freedesktop.hostname1",
         .vtables = BUS_VTABLES(hostname_vtable),
@@ -758,7 +758,7 @@ static int connect_bus(Context *c, sd_event *event, sd_bus **_bus) {
         if (r < 0)
                 return log_error_errno(r, "Failed to get system bus connection: %m");
 
-        r = bus_add_implementation(bus, &manager_object, c);
+        r = bus_add_implementation(bus, manager_object, c);
         if (r < 0)
                 return r;
 
@@ -789,8 +789,8 @@ static int run(int argc, char *argv[]) {
 
         r = service_parse_argv("systemd-hostnamed.service",
                                "Manage the system hostname and related metadata.",
-                               BUS_IMPLEMENTATIONS(&manager_object,
-                                                   &log_control_object),
+                               BUS_IMPLEMENTATIONS(manager_object,
+                                                   log_control_object),
                                argc, argv);
         if (r <= 0)
                 return r;

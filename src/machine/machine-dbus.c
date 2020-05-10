@@ -1502,7 +1502,7 @@ static const sd_bus_vtable machine_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation machine_object = {
+const BusObjectImplementation* const machine_object = &(BusObjectImplementation){
         "/org/freedesktop/machine1/machine",
         "org.freedesktop.machine1.Machine",
         .fallback_vtables = BUS_FALLBACK_VTABLES({machine_vtable, machine_object_find}),

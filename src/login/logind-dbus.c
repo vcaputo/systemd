@@ -3752,13 +3752,13 @@ static const sd_bus_vtable manager_vtable[] = {
         SD_BUS_VTABLE_END
 };
 
-const BusObjectImplementation manager_object = {
+const BusObjectImplementation* const manager_object = &(BusObjectImplementation){
         "/org/freedesktop/login1",
         "org.freedesktop.login1.Manager",
         .vtables = BUS_VTABLES(manager_vtable),
-        .children = BUS_IMPLEMENTATIONS(&seat_object,
-                                        &session_object,
-                                        &user_object),
+        .children = BUS_IMPLEMENTATIONS(seat_object,
+                                        session_object,
+                                        user_object),
 };
 
 static int session_jobs_reply(Session *s, uint32_t jid, const char *unit, const char *result) {
