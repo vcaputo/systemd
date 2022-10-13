@@ -240,8 +240,8 @@ _public_ int sd_journal_sendv(const struct iovec *iov, int n) {
         PROTECT_ERRNO;
         int fd, r;
         _cleanup_close_ int buffer_fd = -1;
-        struct iovec *w;
-        uint64_t *l;
+        _cleanup_newa_ struct iovec *w = NULL;
+        _cleanup_newa_ uint64_t *l = NULL;
         int i, j = 0;
         static const union sockaddr_union sa = {
                 .un.sun_family = AF_UNIX,
@@ -258,8 +258,11 @@ _public_ int sd_journal_sendv(const struct iovec *iov, int n) {
         assert_return(iov, -EINVAL);
         assert_return(n > 0, -EINVAL);
 
-        w = newa(struct iovec, n * 5 + 3);
-        l = newa(uint64_t, n);
+        if (!newa_safe(&w, n * 5 + 3))
+                return -ENOMEM;
+
+        if (!newa_safe(&l, n))
+                return -ENOMEM;
 
         for (i = 0; i < n; i++) {
                 char *c, *nl;
