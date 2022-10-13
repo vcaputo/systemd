@@ -33,14 +33,14 @@ typedef void* (*mfree_func_t)(void *p);
 #define newa(t, n)                                                      \
         ({                                                              \
                 size_t _n_ = n;                                         \
-                assert(!size_multiply_overflow(sizeof(t), _n_));        \
+                assert(!size_multiply_overflow(0, sizeof(t), _n_));     \
                 (t*) alloca_safe(sizeof(t)*_n_);                        \
         })
 
 #define newa0(t, n)                                                     \
         ({                                                              \
                 size_t _n_ = n;                                         \
-                assert(!size_multiply_overflow(sizeof(t), _n_));        \
+                assert(!size_multiply_overflow(0, sizeof(t), _n_));     \
                 (t*) alloca0((sizeof(t)*_n_));                          \
         })
 
@@ -107,12 +107,12 @@ static inline void freep(void *p) {
 
 #define _cleanup_free_ _cleanup_(freep)
 
-static inline bool size_multiply_overflow(size_t size, size_t need) {
-        return _unlikely_(need != 0 && size > (SIZE_MAX / need));
+static inline bool size_multiply_overflow(size_t head, size_t size, size_t need) {
+        return _unlikely_(need != 0 && size > ((SIZE_MAX - head) / need));
 }
 
 _malloc_  _alloc_(1, 2) static inline void *malloc_multiply(size_t size, size_t need) {
-        if (size_multiply_overflow(size, need))
+        if (size_multiply_overflow(0, size, need))
                 return NULL;
 
         return malloc(size * need ?: 1);
@@ -120,7 +120,7 @@ _malloc_  _alloc_(1, 2) static inline void *malloc_multiply(size_t size, size_t 
 
 #if !HAVE_REALLOCARRAY
 _alloc_(2, 3) static inline void *reallocarray(void *p, size_t need, size_t size) {
-        if (size_multiply_overflow(size, need))
+        if (size_multiply_overflow(0, size, need))
                 return NULL;
 
         return realloc(p, size * need ?: 1);
@@ -128,7 +128,7 @@ _alloc_(2, 3) static inline void *reallocarray(void *p, size_t need, size_t size
 #endif
 
 _alloc_(2, 3) static inline void *memdup_multiply(const void *p, size_t size, size_t need) {
-        if (size_multiply_overflow(size, need))
+        if (size_multiply_overflow(0, size, need))
                 return NULL;
 
         return memdup(p, size * need);
@@ -137,7 +137,7 @@ _alloc_(2, 3) static inline void *memdup_multiply(const void *p, size_t size, si
 /* Note that we can't decorate this function with _alloc_() since the returned memory area is one byte larger
  * than the product of its parameters. */
 static inline void *memdup_suffix0_multiply(const void *p, size_t size, size_t need) {
-        if (size_multiply_overflow(size, need))
+        if (size_multiply_overflow(0, size, need))
                 return NULL;
 
         return memdup_suffix0(p, size * need);

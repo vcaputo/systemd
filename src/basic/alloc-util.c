@@ -60,7 +60,7 @@ void* greedy_realloc(
                 return NULL;
         newalloc = need * 2;
 
-        if (size_multiply_overflow(newalloc, size))
+        if (size_multiply_overflow(0, newalloc, size))
                 return NULL;
         a = newalloc * size;
 

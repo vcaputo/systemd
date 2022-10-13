@@ -297,7 +297,7 @@ static size_t fd_input_callback(void *buf, size_t size, size_t nmemb, void *user
         if (u->input < 0)
                 return 0;
 
-        assert(!size_multiply_overflow(size, nmemb));
+        assert(!size_multiply_overflow(0, size, nmemb));
 
         n = read(u->input, buf, size * nmemb);
         log_debug("%s: allowed %zu, read %zd", __func__, size*nmemb, n);

@@ -10,7 +10,7 @@ void *xbsearch_r(const void *key, const void *base, size_t nmemb, size_t size,
         const void *p;
         int comparison;
 
-        assert(!size_multiply_overflow(nmemb, size));
+        assert(!size_multiply_overflow(0, nmemb, size));
 
         l = 0;
         u = nmemb;
