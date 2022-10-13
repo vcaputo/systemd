@@ -30,6 +30,45 @@ typedef void* (*mfree_func_t)(void *p);
                 alloca(_nn_ == 0 ? 1 : _nn_);                           \
         })                                                              \
 
+typedef struct newa_safe_t {
+        free_func_t     free_func;
+        char            rest[];
+} newa_safe_t;
+
+static inline void newa_freep(void *p) {
+        newa_safe_t     *s = container_of(*(void**) p, newa_safe_t, rest);
+
+        if (s->free_func)
+                s->free_func(*(void**) p);
+
+        *(void**)p = NULL;
+}
+
+#define _cleanup_newa_ _cleanup_(newa_freep)
+
+#define newa_safe(p, n)                                                 \
+        ({                                                              \
+                newa_safe_t *_p_;                                       \
+                size_t _n_ = n;                                         \
+                                                                        \
+                assert(!size_multiply_overflow(sizeof(*_p_), sizeof(**p), _n_));\
+                                                                        \
+                _n_ = sizeof(**p)*_n_ + sizeof(*_p_);                   \
+                if (_n_ <= ALLOCA_MAX) {                                \
+                        _p_ = alloca_safe(_n_);                         \
+                        _p_->free_func = NULL;                          \
+                } else {                                                \
+                        _p_ = malloc(_n_);                              \
+                        if (_p_)                                        \
+                                _p_->free_func = free;                  \
+                }                                                       \
+                                                                        \
+                if (_p_)                                                \
+                        *p = (typeof(*p)) &_p_->rest;                   \
+                                                                        \
+                _p_ ? &_p_->rest : NULL;                                \
+          })
+
 #define newa(t, n)                                                      \
         ({                                                              \
                 size_t _n_ = n;                                         \
