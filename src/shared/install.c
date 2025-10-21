@@ -34,6 +34,7 @@
 #include "strv.h"
 #include "unit-file.h"
 #include "unit-name.h"
+#include "watchdog.h"
 
 #define UNIT_FILE_FOLLOW_SYMLINK_MAX 64
 
@@ -676,7 +677,9 @@ static int remove_marked_symlinks_fd(
 
         rewinddir(d);
 
-        FOREACH_DIRENT(de, d, return -errno)
+        FOREACH_DIRENT(de, d, return -errno) {
+                (void) watchdog_ping();
+
                 if (de->d_type == DT_DIR) {
                         _cleanup_close_ int nfd = -EBADF;
                         _cleanup_free_ char *p = NULL;
@@ -774,6 +777,7 @@ static int remove_marked_symlinks_fd(
                         if (r > 0 && !dry_run)
                                 *restart = true;
                 }
+        }
 
         return ret;
 }
@@ -871,6 +875,8 @@ static int find_symlinks_in_directory(
         FOREACH_DIRENT(de, dir, return -errno) {
                 bool found_path = false, found_dest = false, b = false;
 
+                (void) watchdog_ping();
+
                 if (de->d_type != DT_LNK)
                         continue;
 
@@ -964,6 +970,8 @@ static int find_symlinks(
                 const char *suffix;
                 _cleanup_free_ const char *path = NULL;
                 _cleanup_closedir_ DIR *d = NULL;
+
+                (void) watchdog_ping();
 
                 if (de->d_type != DT_DIR)
                         continue;
@@ -3719,6 +3727,8 @@ int unit_file_preset_all(
                 FOREACH_DIRENT(de, d, RET_GATHER(r, -errno)) {
                         int k;
 
+                        (void) watchdog_ping();
+
                         if (!unit_name_is_valid(de->d_name, UNIT_NAME_ANY))
                                 continue;
 
@@ -3797,6 +3807,8 @@ int unit_file_get_list(
                 }
 
                 FOREACH_DIRENT(de, d, return -errno) {
+                        (void) watchdog_ping();
+
                         if (!IN_SET(de->d_type, DT_LNK, DT_REG))
                                 continue;
 

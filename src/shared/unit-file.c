@@ -20,6 +20,7 @@
 #include "time-util.h"
 #include "unit-file.h"
 #include "unit-name.h"
+#include "watchdog.h"
 
 int unit_symlink_name_compatible(const char *symlink, const char *target, bool instance_propagation) {
         _cleanup_free_ char *template = NULL;
@@ -454,6 +455,8 @@ int unit_file_build_name_map(
                         char *filename;
                         _cleanup_free_ char *dst = NULL;
                         bool symlink_to_dir = false;
+
+                        (void) watchdog_ping();
 
                         /* We only care about valid units and dirs with certain suffixes, let's ignore the
                          * rest. */
